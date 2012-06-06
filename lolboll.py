@@ -1,4 +1,9 @@
 #!/usr/bin/python
-print "LOLBOLL"
-print "erik was here"
-"""meck meck meck"""
+def lolboll():
+	"""meck meck meck"""
+	print "LOLBOLL"
+	print "erik was here"
+
+lolboll()
+
+print lolboll.__doc__

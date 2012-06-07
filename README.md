@@ -11,3 +11,6 @@ N0w 1 4m th3 m4573r!
 
 
 Push for the win.
+
+We should consider using XML or simular for storing default shipbuilds.
+And later to store user made ones.

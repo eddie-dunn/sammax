@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 def lolboll():
 	"""meck meck meck"""
 	"""I am master of my pythoney domain!"""

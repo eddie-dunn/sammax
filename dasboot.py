@@ -1,5 +1,5 @@
 class DasBoot:
-	def __init__(self, dmg, hp, xcoord, ycoord):
+	def __init__(self, dmg, ammo, hp, xcoord, ycoord):
 		
 		"////////////////////"
 		"Game STATS"
@@ -7,6 +7,7 @@ class DasBoot:
 		
 		self.d = dmg
 		self.h = hp
+		self.ammostash = ammo
 		"Removed speed, since irrelevant without a vector"
 		"See new entry (dx,dy) under 'Physics'"
 		
@@ -46,6 +47,3 @@ class DasBoot:
 		
 		"afterburnes?"
 		self.afterburners = []
-		
-		"ammunition?"
-		self.ammostash = []

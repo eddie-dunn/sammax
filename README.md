@@ -1,5 +1,6 @@
 sammax
 ======
+Gubbs, check it out: www.pygame.org/wiki/about
 
 Project 1: Simple game
 lololol

@@ -1,5 +1,5 @@
 class DasBoot:
-	def __init__(self, dmg, ammo, hp, xcoord, ycoord):
+	def __init__(self, dmg, ammo, hp, xcoord, ycoord, picpath="boat.jpg"):
 		
 		"////////////////////"
 		"Game STATS"
@@ -10,8 +10,6 @@ class DasBoot:
 		self.ammostash = ammo
 		"Removed speed, since irrelevant without a vector"
 		"See new entry (dx,dy) under 'Physics'"
-		
-		
 		
 		"////////////////////"
 		"Physics"
@@ -34,16 +32,21 @@ class DasBoot:
 		self.iy = 1.0
 		
 		
-		
 		"////////////////////"
 		"Modules"
 		"////////////////////"
 		
 		"propulsion: sails, oars, propeller"
 		self.propulsion = []
+		self.afterburners = []
 		
 		"Cannons!"
 		self.cannons = []
 		
-		"afterburnes?"
-		self.afterburners = []
+		"////////////////////"
+		"Graphics"
+		"////////////////////"
+		
+		self.picpath = picpath
+		self.drawx = 0
+		self.drawy = 0

@@ -1,7 +1,7 @@
 import os, sys, pygame
 from pygame.locals import *
-import random
 from dasboot import *
+from boatsim import *
 
 if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
@@ -31,6 +31,23 @@ def main():
 	
 	sound.play()
 	
+	
+	"Changed to list"
+	boat = [DasBoot(20, 20, 100, 5, 5,), DasBoot(10, 20, 200, 25, 25)]
+	
+	"""
+	"Tracking variables"
+	turn = 0
+	winner = 0
+	draw = 0
+	"""
+	
+	sim_obj = BoatSim(boat)
+	
+	"Main thing, game runs until one or both ships are destroyed or all ammo is gone"
+	print "boat1", "boat2", "turn"
+	print boat[0].h, boat[1].h
+	
 	while 1:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -52,17 +69,11 @@ def main():
 	
 		x = x+x1
 		y = y+y1
-	"Changed to list"
-	boat = [DasBoot(20, 20, 100, 5, 5,), DasBoot(10, 20, 200, 25, 25)]
+		
+		sim_obj.run()
 	
-	"Tracking variables"
-	turn = 0
-	winner = 0
-	draw = 0
+		"""
 	
-	"Main thing, game runs until one or both ships are destroyed or all ammo is gone"
-	print "boat1", "boat2", "turn"
-	print boat[0].h, boat[1].h
 	while winner == 0 and draw == 0:
 		turn = turn+1
 		if boat[1].ammostash > 0:
@@ -85,7 +96,11 @@ def main():
 		if winner == 0 and boat[0].ammostash == 0 and boat[1].ammostash == 0:
 			draw = 1
 			print "Draw!"
-		
+		"""
+
+
+
+
 
 if __name__ == '__main__':
 	main()

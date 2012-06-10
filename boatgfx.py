@@ -5,47 +5,50 @@ if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
 
 class BoatGfx():
-	
-	def __init__(self, boat):
-		pygame.init()
-		
-		self.boat = boat
-		self.boatpic = []
-		
-		sound = pygame.mixer.Sound("geese.mp3")
-		sound.play()
 
-		self.size = self.width, self.height = 600,400
-		self.backg = 0,0,0
-		
-		self.screen = pygame.display.set_mode(self.size)
-		
-		for i in range(len(boat)):
-			self.boatpic.append(pygame.image.load(self.boat[i].picpath))
-		
-		self.x. = 0
-		self.y = 0
-		self.x1 = 1
-		self.y1 = 1
-	
-	def run(self):
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				sys.exit()
-				
-		self.backg = self.x%255, self.y%255, ((self.x+self.y)%255)
-		self.screen.fill(self.backg)
-		self.screen.blit(self.boatpic[0],(self.x,self.y))
-		pygame.display.flip()
-		
-		if self.x == self.width:
-			self.x1 = -1
-		elif self.x == 0:
-			self.x1 = 1
-		if self.y == self.height:
-			self.y1 = -1
-		elif self.y == 0:
-			self.y1 = 1
-	
-		self.x = self.x+self.x1
-		self.y = self.y+self.y1
+    def __init__(self, boat, width = 600, height = 400):
+        pygame.init()
+
+        self.boat = boat
+        self.boatpic = []
+
+        sound = pygame.mixer.Sound("geese.mp3")
+        sound.play()
+
+        self.size = width, height
+        self.backg = 0,0,0
+
+        self.screen = pygame.display.set_mode(self.size)
+
+        for item in self.boat:
+            self.boatpic.append(pygame.image.load(item.picpath))
+
+        self.x1 = [1, 1]
+        self.y1 = [1, 1]
+
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+        self.backg = self.boat[0].drawx%255, self.boat[0].drawy%255, ((self.boat[0].drawx+self.boat[0].drawy)%255)
+        self.screen.fill(self.backg)
+
+        for i in range(len(self.boat)):
+            self.screen.blit(self.boatpic[i],(self.boat[i].drawx,self.boat[i].drawy))
+
+        pygame.display.flip()
+
+        for i in range(len(self.boat)):
+            if self.boat[i].drawx == self.width:
+                self.x1[i] = -1
+            elif self.boat[i].drawx == 0:
+                self.x1[i] = 1
+            if self.boat[i].drawy == self.height:
+                self.y1[i] = -1
+            elif self.boat[i].drawy == 0:
+                self.y1[i] = 1
+
+        for i in range(len(self.boat)):
+            self.boat[i].drawx = self.boat[i].drawx+self.x1[i]
+            self.boat[i].drawy = self.boat[i].drawy+self.y1[i]

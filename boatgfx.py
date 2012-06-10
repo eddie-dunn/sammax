@@ -1,4 +1,4 @@
-import os, sys, pygame
+import os, sys, pygame, random, math
 from pygame.locals import *
 
 if not pygame.font: print 'Warning, fonts disabled'
@@ -12,43 +12,62 @@ class BoatGfx():
         self.boat = boat
         self.boatpic = []
 
+        self.rotatedpic = []
+        self.degree = []
+        self.rotate = 0
+
         sound = pygame.mixer.Sound("geese.mp3")
         sound.play()
 
-        self.size = width, height
+        self.width = width
+        self.height = height
+        self.size = self.width, self.height
         self.backg = 0,0,0
 
         self.screen = pygame.display.set_mode(self.size)
 
+        self.mouse_x = 1
+        self.mouse_y = 1
+
         for item in self.boat:
             self.boatpic.append(pygame.image.load(item.picpath))
+            self.rotatedpic.append(pygame.image.load(item.picpath))
 
-        self.x1 = [1, 1]
-        self.y1 = [1, 1]
+            self.degree.append(0)
 
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+                calc_x = self.boat[0].drawx - self.mouse_x
+                calc_y = self.boat[0].drawy - self.mouse_y
+                self.degree[0] = math.degrees(math.atan2(calc_x, calc_y))
 
-        self.backg = self.boat[0].drawx%255, self.boat[0].drawy%255, ((self.boat[0].drawx+self.boat[0].drawy)%255)
+                self.boat[0].drawx = self.mouse_x
+                self.boat[0].drawy = self.mouse_y
+
+        self.backg = (0,200,255)
         self.screen.fill(self.backg)
 
         for i in range(len(self.boat)):
-            self.screen.blit(self.boatpic[i],(self.boat[i].drawx,self.boat[i].drawy))
+            self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
+            self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx,self.boat[i].drawy))
 
         pygame.display.flip()
 
-        for i in range(len(self.boat)):
-            if self.boat[i].drawx == self.width:
-                self.x1[i] = -1
-            elif self.boat[i].drawx == 0:
-                self.x1[i] = 1
-            if self.boat[i].drawy == self.height:
-                self.y1[i] = -1
-            elif self.boat[i].drawy == 0:
-                self.y1[i] = 1
+        #~ for i in range(len(self.boat)):
+            #~ if self.boat[i].drawx >= self.width:
+                #~ self.x1[i] = -1
+            #~ elif self.boat[i].drawx <= 0:
+                #~ self.x1[i] = 1
+            #~ if self.boat[i].drawy >= self.height:
+                #~ self.y1[i] = -1
+            #~ elif self.boat[i].drawy <= 0:
+                #~ self.y1[i] = 1
 
-        for i in range(len(self.boat)):
-            self.boat[i].drawx = self.boat[i].drawx+self.x1[i]
-            self.boat[i].drawy = self.boat[i].drawy+self.y1[i]
+        #~ for i in range(len(self.boat)):
+            #~ self.boat[i].drawx = self.boat[i].drawx+(self.x1[i]*random.randint(1, 3))
+            #~ self.boat[i].drawy = self.boat[i].drawy+(self.y1[i]*random.randint(1, 3))
+            #~ self.degree[i] += random.randint(0, 3)

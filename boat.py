@@ -16,9 +16,9 @@ class Boat:
     subclassed and extended for different boats.
     """
 
-    def __init__(self, x=0, y=0, hp=5, picpath="boat.jpg"):
-    # Disabling pylint complaints on too short variable names
+    def __init__(self, x=0, y=0, name="n1", picpath="boat.jpg"):
     # pylint: disable=C0103
+    # Disable pylint complaints about too short variable names
         """
         Constructor. All parameters are optional.
 
@@ -36,33 +36,36 @@ class Boat:
 
         """
 
-        self._hp = hp
-        self._ammo = 5
-        self._x = x
-        self._y = y
+        # Initialized variables
+        self.x = x
+        self.y = y
+        self._picpath = picpath
+        self.name = name
+
+        # Variables with default values
+        self.hp = 10
+        self.ammo = 5
 
         # "Direction of bow"
         self._xdir = 0.0
         self._ydir = 1.0
 
-        self._picpath = picpath
+    @property
+    def image_path(self):
+        """Return filepath of boat's image sprite."""
+        return self._picpath
 
     @property
-    def drawx(self):
-        """To be deprecated. Thomas currently uses this for unknown reasons."""
-        return self._x
+    def direction(self):
+        """A the direction the boat is headed in."""
+        return (self._xdir, self._ydir)
 
-    @drawx.setter
-    def drawx(self, value):
-        """To be deprecated. Thomas currently uses this for unknown reasons."""
-        self._x = value
-
-    @property
-    def drawy(self):
-        """To be deprecated. Thomas currently uses this for unknown reasons."""
-        return self._x
-
-    @drawy.setter
-    def drawy(self, value):
-        """To be deprecated. Thomas currently uses this for unknown reasons."""
-        self._y = value
+    def move(self, direction):
+        if 'left' in direction:
+            self.x -= 1
+        elif 'right' in direction:
+            self.x += 1
+        elif 'up' in direction :
+            self.y += 1
+        elif 'down' in direction:
+            self.y -= 1

@@ -6,6 +6,7 @@ def main():
 
     boat = [DasBoot(20, 20, 100, 0, 0,), DasBoot(10, 20, 200, 0, 200)]
 
+
     #~ "Skapar en sim och ett fonster"
     sim_obj = BoatSim(boat)
     sim_win = BoatGfx(boat)

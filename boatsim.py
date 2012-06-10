@@ -10,7 +10,7 @@ class BoatSim():
 
     def run(self):
         boat = self.boat
-        if not self.winner and not self.draw:
+        if self.winner == 0 and self.draw == 0:
             self.turn = self.turn+1
             if boat[1].ammostash > 0:
                 boat[0].h = boat[0].h-random.randint(0, boat[1].d)

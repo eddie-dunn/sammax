@@ -39,21 +39,26 @@ class BoatGfx():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == MOUSEBUTTONDOWN:
+            elif event.type == MOUSEMOTION:
                 self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
                 calc_x = self.boat[0].drawx - self.mouse_x
                 calc_y = self.boat[0].drawy - self.mouse_y
                 self.degree[0] = math.degrees(math.atan2(calc_x, calc_y))
 
-                self.boat[0].drawx = self.mouse_x
-                self.boat[0].drawy = self.mouse_y
+                self.boat[0].drawx = self.mouse_x;
+                self.boat[0].drawy = self.mouse_y;
 
         self.backg = (0,200,255)
         self.screen.fill(self.backg)
 
         for i in range(len(self.boat)):
             self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
-            self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx,self.boat[i].drawy))
+            rect0 = self.rotatedpic[i].get_bounding_rect()
+            x0 = self.boat[i].drawx - rect0.width / 2 
+            y0 = self.boat[i].drawy - rect0.height / 2 
+            #self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx,self.boat[i].drawy))
+            self.screen.blit(self.rotatedpic[i],(x0,y0))
+
 
         pygame.display.flip()
 

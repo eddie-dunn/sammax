@@ -35,7 +35,7 @@ class BoatGfx():
 
             self.degree.append(0)
 
-    def run(self):
+    def handleEvents(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -47,11 +47,16 @@ class BoatGfx():
 
                 self.boat[0].drawx = self.mouse_x;
                 self.boat[0].drawy = self.mouse_y;
+                
+                #self.boat[0].targetheadingx = self.mouse_x
+                #self.boat[0].targetheadingy = self.mouse_y
 
+    def run(self):
         self.backg = (0,200,255)
         self.screen.fill(self.backg)
 
         for i in range(len(self.boat)):
+            #self.degree[i] = math.degrees(math.atan2(self.boat[i].ix, self.boat[i].iy))
             self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
             rect0 = self.rotatedpic[i].get_bounding_rect()
             x0 = self.boat[i].drawx - rect0.width / 2 

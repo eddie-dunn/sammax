@@ -1,4 +1,5 @@
 import random
+import math
 
 class BoatSim():
 
@@ -32,3 +33,51 @@ class BoatSim():
             if self.winner == 0 and boat[0].ammostash == 0 and boat[1].ammostash == 0:
                 self.draw = 1
                 print "Draw!"
+                
+    def run2(self):
+        dt = .01
+        boat = self.boat[0]
+        acc_fact_max = 10.0
+        ret_fact = 50.0
+        turn_fact = 1.0
+        turn_max = 15.0
+        if boat.x != boat.targetheadingx or boat.y != boat.targetheadingy:
+            #Adjust heading
+            dist = math.sqrt((boat.targetheadingx - boat.x)*(boat.targetheadingx - boat.x) + (boat.targetheadingy - boat.y)*(boat.targetheadingy - boat.y))
+            angleTarget =math.degrees(math.atan2(boat.targetheadingx - boat.x, boat.targetheadingy - boat.y))
+            angleBow = math.degrees(math.atan2(boat.ix,boat.iy))
+            
+            diffA = angleTarget-angleBow
+            if diffA > turn_max:
+                diffA = turn_max
+            if diffA < -turn_max:
+                diffA = turn_max
+            boat.ix = math.cos(math.radians(diffA*dt + angleBow))
+            boat.iy = math.sin(math.radians(diffA*dt + angleBow))
+            
+            # Calc total acceleration
+            if dist > acc_fact_max:
+                dist = acc_fact_max
+            accX = dist*math.cos(angleBow) - ret_fact*boat.dx*boat.dx
+            accY = dist*math.sin(angleBow) - ret_fact*boat.dy*boat.dy
+            
+            # Update velocity
+            boat.dx = boat.dx + accX*dt
+            boat.dy = boat.dy + accY*dt
+            
+            # Update position   
+            boat.x = boat.x + boat.dx
+            boat.y = boat.y + boat.dy
+                
+            boat.drawx = math.floor(boat.x)
+            boat.drawy = math.floor(boat.y)
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                

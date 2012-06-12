@@ -50,6 +50,10 @@ class DasBoot:
         self.picpath = picpath
         self.drawx = xcoord
         self.drawy = ycoord
+        
+        # Target position
+        self.targetheadingx = xcoord
+        self.targetheadingy = ycoord
 
     @property
     def propulsion(self):

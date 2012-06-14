@@ -8,6 +8,8 @@ class DasBoot:
         self.d = dmg
         self.h = hp
         self.ammostash = ammo
+
+        self.spd = 25
         #~ "Removed speed, since irrelevant without a vector"
         #~ "See new entry (dx,dy) under 'Physics'"
         #~
@@ -50,7 +52,7 @@ class DasBoot:
         self.picpath = picpath
         self.drawx = xcoord
         self.drawy = ycoord
-        
+
         # Target position
         self.targetheadingx = xcoord
         self.targetheadingy = ycoord

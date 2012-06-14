@@ -16,6 +16,22 @@ class BoatGfx():
         self.degree = []
         self.rotate = 0
 
+        self.rect0 = []
+        self.x0 = []
+        self.y0 = []
+
+        #~ Used for movement animation
+
+        #~ How many steps to cover distance?
+        self.steps_needed = 0
+
+        #~ How many steps have been taken in this animation round?
+        self.steps_taken = 0
+
+        #~ How many pixels of movement per step in x and y?
+        self.x_comp = 0
+        self.y_comp = 0
+
         sound = pygame.mixer.Sound("geese.mp3")
         sound.play()
 
@@ -35,19 +51,60 @@ class BoatGfx():
 
             self.degree.append(0)
 
+        for i in range(len(self.boat)):
+            self.rect0.append(self.boatpic[i].get_bounding_rect())
+            self.x0.append(self.boat[i].drawx - self.rect0[i].width / 2)
+            self.y0.append(self.boat[i].drawy - self.rect0[i].width / 2)
+
+
     def handleEvents(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == MOUSEMOTION:
+            elif event.type == MOUSEBUTTONDOWN:
                 self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
                 calc_x = self.boat[0].drawx - self.mouse_x
                 calc_y = self.boat[0].drawy - self.mouse_y
                 self.degree[0] = math.degrees(math.atan2(calc_x, calc_y))
 
-                self.boat[0].drawx = self.mouse_x;
-                self.boat[0].drawy = self.mouse_y;
-                
+                #~ Calculate how many steps are needed to cover the distance, and round to nearest integer
+                self.steps_needed = round((math.sqrt(calc_x*calc_x + calc_y*calc_y)/self.boat[0].spd), 0)
+
+                self.x_comp = calc_x/self.steps_needed
+                self.y_comp = calc_y/self.steps_needed
+
+                self.steps_taken = 0
+
+                for i in range(len(self.boat)):
+                    #self.degree[i] = math.degrees(math.atan2(self.boat[i].ix, self.boat[i].iy))
+                    self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
+                    self.rect0[i] = self.rotatedpic[i].get_bounding_rect()
+                    self.x0[i] = self.boat[i].drawx - self.rect0[i].width / 2
+                    self.y0[i] = self.boat[i].drawy - self.rect0[i].height / 2
+
+                    #self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx,self.boat[i].drawy))
+
+                while self.steps_taken < self.boat[0].spd:
+                    self.steps_taken += 1
+
+                    pygame.time.wait(40)
+
+                    self.boat[0].drawx -= self.x_comp
+                    self.boat[0].drawy -= self.y_comp
+
+                    if abs(self.boat[0].drawx <= self.x_comp) or abs(self.boat[0].drawy <= self.y_comp):
+                        self.boat[0].drawx = self.mouse_x
+                        self.boat[0].drawy = self.mouse_y
+                        self.steps_taken = self.boat[0].spd
+
+                    self.x0[0] = self.boat[0].drawx - self.rect0[0].width / 2
+                    self.y0[0] = self.boat[0].drawy - self.rect0[0].height / 2
+
+                    self.run()
+                #~ lol semikolon
+                #~ self.boat[0].drawx = self.mouse_x;
+                #~ self.boat[0].drawy = self.mouse_y;
+
                 #self.boat[0].targetheadingx = self.mouse_x
                 #self.boat[0].targetheadingy = self.mouse_y
 
@@ -56,28 +113,6 @@ class BoatGfx():
         self.screen.fill(self.backg)
 
         for i in range(len(self.boat)):
-            #self.degree[i] = math.degrees(math.atan2(self.boat[i].ix, self.boat[i].iy))
-            self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
-            rect0 = self.rotatedpic[i].get_bounding_rect()
-            x0 = self.boat[i].drawx - rect0.width / 2 
-            y0 = self.boat[i].drawy - rect0.height / 2 
-            #self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx,self.boat[i].drawy))
-            self.screen.blit(self.rotatedpic[i],(x0,y0))
-
+            self.screen.blit(self.rotatedpic[i],(self.x0[i],self.y0[i]))
 
         pygame.display.flip()
-
-        #~ for i in range(len(self.boat)):
-            #~ if self.boat[i].drawx >= self.width:
-                #~ self.x1[i] = -1
-            #~ elif self.boat[i].drawx <= 0:
-                #~ self.x1[i] = 1
-            #~ if self.boat[i].drawy >= self.height:
-                #~ self.y1[i] = -1
-            #~ elif self.boat[i].drawy <= 0:
-                #~ self.y1[i] = 1
-
-        #~ for i in range(len(self.boat)):
-            #~ self.boat[i].drawx = self.boat[i].drawx+(self.x1[i]*random.randint(1, 3))
-            #~ self.boat[i].drawy = self.boat[i].drawy+(self.y1[i]*random.randint(1, 3))
-            #~ self.degree[i] += random.randint(0, 3)

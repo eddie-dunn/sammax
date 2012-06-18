@@ -9,7 +9,7 @@ class DasBoot:
         self.h = hp
         self.ammostash = ammo
 
-        self.spd = 25
+        self.spd = 15
         #~ "Removed speed, since irrelevant without a vector"
         #~ "See new entry (dx,dy) under 'Physics'"
         #~

@@ -9,6 +9,9 @@ class BoatSim():
         self.turn = 0
         self.boat = boat
 
+        print "boat1", "boat2", "turn"
+        print boat[0].h, boat[1].h
+
     def run(self):
         boat = self.boat
         if self.winner == 0 and self.draw == 0:
@@ -33,7 +36,7 @@ class BoatSim():
             if self.winner == 0 and boat[0].ammostash == 0 and boat[1].ammostash == 0:
                 self.draw = 1
                 print "Draw!"
-                
+
     def run2(self):
         dt = .01
         boat = self.boat[0]
@@ -46,7 +49,7 @@ class BoatSim():
             dist = math.sqrt((boat.targetheadingx - boat.x)*(boat.targetheadingx - boat.x) + (boat.targetheadingy - boat.y)*(boat.targetheadingy - boat.y))
             angleTarget =math.degrees(math.atan2(boat.targetheadingx - boat.x, boat.targetheadingy - boat.y))
             angleBow = math.degrees(math.atan2(boat.ix,boat.iy))
-            
+
             diffA = angleTarget-angleBow
             if diffA > turn_max:
                 diffA = turn_max
@@ -54,30 +57,30 @@ class BoatSim():
                 diffA = turn_max
             boat.ix = math.cos(math.radians(diffA*dt + angleBow))
             boat.iy = math.sin(math.radians(diffA*dt + angleBow))
-            
+
             # Calc total acceleration
             if dist > acc_fact_max:
                 dist = acc_fact_max
             accX = dist*math.cos(angleBow) - ret_fact*boat.dx*boat.dx
             accY = dist*math.sin(angleBow) - ret_fact*boat.dy*boat.dy
-            
+
             # Update velocity
             boat.dx = boat.dx + accX*dt
             boat.dy = boat.dy + accY*dt
-            
-            # Update position   
+
+            # Update position
             boat.x = boat.x + boat.dx
             boat.y = boat.y + boat.dy
-                
+
             boat.drawx = math.floor(boat.x)
             boat.drawy = math.floor(boat.y)
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+
+
+
+
+
+
+
+
+
+

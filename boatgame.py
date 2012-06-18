@@ -11,18 +11,14 @@ def main():
     sim_obj = BoatSim(boat)
     sim_win = BoatGfx(boat)
 
-    #~ "Main thing, game runs until one or both ships are destroyed or all ammo is gone"
-    print "boat1", "boat2", "turn"
-    print boat[0].h, boat[1].h
-
     #~ "Alltid true, kor sim och uppdatera fonster"
     while 1:
-        # Handle events
+        #~ # Handle events
         sim_win.handleEvents()
         #~ "Ett steg i simulationen"
-        sim_obj.run()
-        #En uppdatering av fonstret
-        sim_win.run()
+        #~ sim_obj.run()
+        #~ #En uppdatering av fonstret
+        #~ sim_win.run()
 
 
 if __name__ == '__main__':

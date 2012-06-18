@@ -32,8 +32,8 @@ class BoatGfx():
         self.x_comp = 0
         self.y_comp = 0
 
-        sound = pygame.mixer.Sound("geese.mp3")
-        sound.play()
+        #~ sound = pygame.mixer.Sound("geese.mp3")
+        #~ sound.play()
 
         self.width = width
         self.height = height
@@ -56,6 +56,7 @@ class BoatGfx():
             self.x0.append(self.boat[i].drawx - self.rect0[i].width / 2)
             self.y0.append(self.boat[i].drawy - self.rect0[i].width / 2)
 
+        self.run()
 
     def handleEvents(self):
         for event in pygame.event.get():
@@ -70,43 +71,34 @@ class BoatGfx():
                 #~ Calculate how many steps are needed to cover the distance, and round to nearest integer
                 self.steps_needed = round((math.sqrt(calc_x*calc_x + calc_y*calc_y)/self.boat[0].spd), 0)
 
+                print self.steps_needed
                 self.x_comp = calc_x/self.steps_needed
                 self.y_comp = calc_y/self.steps_needed
 
                 self.steps_taken = 0
 
                 for i in range(len(self.boat)):
-                    #self.degree[i] = math.degrees(math.atan2(self.boat[i].ix, self.boat[i].iy))
                     self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
                     self.rect0[i] = self.rotatedpic[i].get_bounding_rect()
                     self.x0[i] = self.boat[i].drawx - self.rect0[i].width / 2
                     self.y0[i] = self.boat[i].drawy - self.rect0[i].height / 2
 
-                    #self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx,self.boat[i].drawy))
-
-                while self.steps_taken < self.boat[0].spd:
+                while self.steps_taken < self.boat[0].spd and self.steps_taken < self.steps_needed:
                     self.steps_taken += 1
-
                     pygame.time.wait(40)
 
                     self.boat[0].drawx -= self.x_comp
                     self.boat[0].drawy -= self.y_comp
 
-                    if abs(self.boat[0].drawx <= self.x_comp) or abs(self.boat[0].drawy <= self.y_comp):
-                        self.boat[0].drawx = self.mouse_x
-                        self.boat[0].drawy = self.mouse_y
+                    if abs(self.mouse_x-self.boat[0].drawx) <= self.x_comp and abs(self.mouse_y-self.boat[0].drawy) <= self.y_comp:
+                        #~ self.boat[0].drawx = self.mouse_x
+                        #~ self.boat[0].drawy = self.mouse_y
                         self.steps_taken = self.boat[0].spd
 
                     self.x0[0] = self.boat[0].drawx - self.rect0[0].width / 2
                     self.y0[0] = self.boat[0].drawy - self.rect0[0].height / 2
 
                     self.run()
-                #~ lol semikolon
-                #~ self.boat[0].drawx = self.mouse_x;
-                #~ self.boat[0].drawy = self.mouse_y;
-
-                #self.boat[0].targetheadingx = self.mouse_x
-                #self.boat[0].targetheadingy = self.mouse_y
 
     def run(self):
         self.backg = (0,200,255)

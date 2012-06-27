@@ -14,8 +14,10 @@ class BoatGfx():
 
         self.boat = boat
         self.boatpic = []
+        self.boatpic_fire = []
 
         self.rotatedpic = []
+        self.rotatedpic_fire = []
         self.degree = []
         self.rotate = 0
 
@@ -51,6 +53,8 @@ class BoatGfx():
         for item in self.boat:
             self.boatpic.append(pygame.image.load(item.picpath))
             self.rotatedpic.append(pygame.image.load(item.picpath))
+            self.boatpic_fire.append(pygame.image.load(item.picpath_fire))
+            self.rotatedpic_fire.append(pygame.image.load(item.picpath_fire))
 
             self.degree.append(0)
 
@@ -66,9 +70,18 @@ class BoatGfx():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
 				mouse_x, mouse_y = pygame.mouse.get_pos()
 				self.event_stack.append(EventStruct(self.boat[0],"_move_here_",[mouse_x, mouse_y]))
+            elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					#~ print "SPACE"
+					self.event_stack.append(EventStruct(self.boat[0],"_fire_weapon_"))
+				elif event.key == pygame.K_ESCAPE:
+					print "ESC"
+					
+				else:
+					print "KEY event: ", event.key, "- not used" 
 
                 #~ self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
                 #~ calc_x = self.boat[0].drawx - self.mouse_x
@@ -114,13 +127,17 @@ class BoatGfx():
 			if(math.fabs(math.degrees(math.atan2(Boat.ix, Boat.iy)) - self.degree[i]) > 0.01):
 				self.degree[i] = math.degrees(math.atan2(Boat.ix, Boat.iy))
 				self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i]+180)
+				self.rotatedpic_fire[i] = pygame.transform.rotate(self.boatpic_fire[i], self.degree[i]+180)
 				self.rect0[i] = self.rotatedpic[i].get_bounding_rect()
 				self.x0[i] = self.rect0[i].width / 2
 				self.y0[i] = self.rect0[i].height / 2
 
 		for i in range(len(self.boat)):
 			#~ self.screen.blit(self.rotatedpic[i],(self.x0[i],self.y0[i]))
+			if self.boat[i].FIRE_ACTIVE != 0:
+				self.screen.blit(self.rotatedpic_fire[i],(self.boat[i].drawx-self.x0[i],self.boat[i].drawy-self.y0[i]))
 			self.screen.blit(self.rotatedpic[i],(self.boat[i].drawx-self.x0[i],self.boat[i].drawy-self.y0[i]))
-
+    
+    
     def drawToScreen(self):
 		pygame.display.flip()

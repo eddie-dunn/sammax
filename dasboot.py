@@ -1,5 +1,5 @@
 class DasBoot:
-    def __init__(self, dmg, ammo, hp, xcoord, ycoord, picpath="pil.png"):
+    def __init__(self, dmg, ammo, hp, xcoord, ycoord, picpath="pil.png", picpath_fire = "fire_pil.png"):
 
         #~ "////////////////////"
         #~ "Game STATS"
@@ -40,7 +40,8 @@ class DasBoot:
         #~ "////////////////////"
         
         #~ What we want the boat to do
-        self.order=0
+        self.order=[]
+        self.FIRE_ACTIVE = 0
 
         #~ "propulsion: sails, oars, propeller"
         self.propulsion = []
@@ -54,6 +55,8 @@ class DasBoot:
         #~ "////////////////////"
         #~
         self.picpath = picpath
+        self.picpath_fire = picpath_fire
+        
         self.drawx = xcoord
         self.drawy = ycoord
 

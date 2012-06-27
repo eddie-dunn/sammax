@@ -46,3 +46,31 @@ class EventStruct:
 
     def setActive(self,A):
 		self.active = A
+
+
+def clean_event_array(A):
+	#~ 	Static function
+	SIZE = len(A)
+	i = 0
+	#~ Remove inactive events
+	while( i < SIZE):
+		if(A[i].isActive() == -1):
+			del A[i]
+			i -= 1
+			SIZE -= 1
+		i += 1
+	
+	#~ Remove doubles
+	i = 0
+	k = 1
+	SIZE = len(A)
+	while i < SIZE:
+		while k < SIZE:
+			if A[i].getKey() == A[k].getKey():
+				del A[i]
+				i -= 1
+				k = SIZE
+				SIZE -= 1
+			k += 1
+		i += 1
+		k = i + 1

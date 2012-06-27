@@ -1,5 +1,6 @@
 import random
 import math
+from eventstruct import *
 
 class BoatSim():
 
@@ -17,17 +18,16 @@ class BoatSim():
 		#~ "Check if there are any new events in stack"
 		for i in range(len(self.event_stack)):
 			E = self.event_stack.popleft()
-			if(E.getKey() == "_move_here_"):
-				if E.getTarget() in self.boat:
-					i = self.boat.index(E.getTarget())
-					self.boat[i].order = E
+			if E.getTarget() in self.boat:
+				i = self.boat.index(E.getTarget())
+				self.boat[i].order.append(E)
+
+		
 		
 		#~ Update everything based on object.order
 		#~ Boats:
 		for i in range(len(self.boat)):
-			B = self.boat[i]
-			if(B.order != 0):
-				action_boat(B)
+			action_boat(self.boat[i])
 					
 
         #~ boat = self.boat
@@ -93,59 +93,66 @@ class BoatSim():
             boat.drawy = math.floor(boat.y)
 
 def action_boat(boat):
+	#~  Clean up used events & Remove doubles.
+	clean_event_array(boat.order)
+	
 	#~ Static function
-	E = boat.order
-	#~ if movement
-	if(E.getKey() == "_move_here_"):
-		coord = E.getValues()
-		if(E.isActive() == 0):
-			#~ Calculate direction to go in
-			dif_x = coord[0] -boat.x
-			dif_y = coord[1] - boat.y
-			angle = math.atan2(dif_x, dif_y)
-			boat.dx = math.sin(angle)
-			boat.dy = math.cos(angle)
-			boat.ix = boat.dx
-			boat.iy = boat.dy
-			E.setActive(1)
-			steps_needed = round((math.sqrt(dif_x*dif_x + dif_y*dif_y)), 0)
-			#~ print steps_needed
-			#~ print math.degrees(angle)
+	for i in range(len(boat.order)):
+		E = boat.order[i]
 		
-		#~  Move one step
-		boat.x += boat.dx*boat.spd
-		boat.y += boat.dy*boat.spd
-		boat.drawx = boat.x
-		boat.drawy = boat.y
-		
-		#~ Stop boat
-		if boat.dx > 0.0 and boat.x - coord[0] > 0 or boat.dy > 0.0 and boat.y - coord[1] > 0:
-			boat.dx = 0
-			boat.dy = 0
-		if boat.dx < 0.0 and boat.x - coord[0] < 0 or boat.dy < 0.0 and boat.y - coord[1] < 0:
-			boat.dx = 0
-			boat.dy = 0
-
-			#~ for i in range(len(self.boat)):
-				#~ self.rotatedpic[i] = pygame.transform.rotate(self.boatpic[i], self.degree[i])
-				#~ self.rect0[i] = self.rotatedpic[i].get_bounding_rect()
-				#~ self.x0[i] = self.boat[i].drawx - self.rect0[i].width / 2
-				#~ self.y0[i] = self.boat[i].drawy - self.rect0[i].height / 2
-#~ 
-			#~ while self.steps_taken < self.boat[0].spd and self.steps_taken < self.steps_needed:
-				#~ self.steps_taken += 1
-				#~ pygame.time.wait(40)
-#~ 
-				#~ self.boat[0].drawx -= self.x_comp
-				#~ self.boat[0].drawy -= self.y_comp
-#~ 
-				#~ if abs(self.mouse_x-self.boat[0].drawx) <= self.x_comp and abs(self.mouse_y-self.boat[0].drawy) <= self.y_comp:
-					#~ self.steps_taken = self.boat[0].spd
-#~ 
-				#~ self.x0[0] = self.boat[0].drawx - self.rect0[0].width / 2
-				#~ self.y0[0] = self.boat[0].drawy - self.rect0[0].height / 2
-#~ 
-				#~ self.run()
+		#~ ############################
+		#~ Movement
+		#~ ############################
+		if(E.getKey() == "_move_here_"):
+			coord = E.getValues()
+			if(E.isActive() == 0):
+				#~ Calculate direction to go in
+				dif_x = coord[0] -boat.x
+				dif_y = coord[1] - boat.y
+				angle = math.atan2(dif_x, dif_y)
+				boat.dx = math.sin(angle)
+				boat.dy = math.cos(angle)
+				boat.ix = boat.dx
+				boat.iy = boat.dy
+				E.setActive(1)
+				steps_needed = round((math.sqrt(dif_x*dif_x + dif_y*dif_y)), 0)
+				#~ print steps_needed
+				#~ print math.degrees(angle)
 			
-
+			#~  Move one step
+			boat.x += boat.dx*boat.spd
+			boat.y += boat.dy*boat.spd
+			boat.drawx = boat.x
+			boat.drawy = boat.y
+			
+			#~ Stop boat
+			if boat.dx > 0.0 and boat.x - coord[0] > 0 or boat.dy > 0.0 and boat.y - coord[1] > 0:
+				boat.dx = 0
+				boat.dy = 0
+				E.setActive(-1)
+			elif boat.dx < 0.0 and boat.x - coord[0] < 0 or boat.dy < 0.0 and boat.y - coord[1] < 0:
+				boat.dx = 0
+				boat.dy = 0
+				E.setActive(-1)
+				
+		#~ ############################
+		#~ Fire
+		#~ ############################
+		elif E.getKey() == "_fire_weapon_":
+			#~ print "FIRE"
+			if boat.FIRE_ACTIVE == 0:
+				boat.FIRE_ACTIVE += 1
+			E.setActive(-1)
+			#~ if(boat.FIRE_ACTIVE > 10):
+				#~ boat.FIRE_ACTIVE = 0
+				#~ E.setActive(-1)
+	
+	
+	
+	
+	#~  Turn of fire after 10 frames
+	if(boat.FIRE_ACTIVE > 0):
+		boat.FIRE_ACTIVE += 1
+	if(boat.FIRE_ACTIVE > 10):
+		boat.FIRE_ACTIVE = 0
 

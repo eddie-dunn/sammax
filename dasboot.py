@@ -5,11 +5,12 @@ class DasBoot:
         #~ "Game STATS"
         #~ "////////////////////"
 
+
         self.d = dmg
         self.h = hp
         self.ammostash = ammo
 
-        self.spd = 15
+        self.spd = 5
         #~ "Removed speed, since irrelevant without a vector"
         #~ "See new entry (dx,dy) under 'Physics'"
         #~
@@ -37,6 +38,9 @@ class DasBoot:
         #~ "////////////////////"
         #~ "Modules"
         #~ "////////////////////"
+        
+        #~ What we want the boat to do
+        self.order=0
 
         #~ "propulsion: sails, oars, propeller"
         self.propulsion = []

@@ -9,7 +9,7 @@ class EventStruct:
     Doc string...
     
     """
-    def __init__(self, target, key, values=0):
+    def __init__(self, target, key, values=0, active=0):
         """
         Constructor. target and key parameters are not optional
 
@@ -27,6 +27,7 @@ class EventStruct:
         self.target = target
         self.key = key
         self.values = values
+        self.active = active
     
     def getTarget(self):
         """ return 'target' """
@@ -39,3 +40,9 @@ class EventStruct:
     def getValues(self):
         """ return 'values' """
         return self.values
+
+    def isActive(self):
+		return self.active
+
+    def setActive(self,A):
+		self.active = A

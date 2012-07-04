@@ -37,7 +37,7 @@ class BoatGfx():
         self.x_comp = 0
         self.y_comp = 0
 
-        #~ sound = pygame.mixer.Sound("geese.mp3")
+        #~ sound = pygame.mixer.Sound("sound/geese.mp3")
         #~ sound.play()
 
         self.width = width

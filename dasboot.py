@@ -1,5 +1,5 @@
 class DasBoot:
-    def __init__(self, dmg, ammo, hp, xcoord, ycoord, picpath="pil.png", picpath_fire = "fire_pil.png"):
+    def __init__(self, dmg, ammo, hp, xcoord, ycoord, picpath="images/pil.png", picpath_fire = "images/fire_pil.png"):
 
         #~ "////////////////////"
         #~ "Game STATS"
